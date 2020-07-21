@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{# First we sort dictionary in order by creation date the we create grouped named tuple #}
+
+{% regroup links|dictsortreversed:"created" by created as created_list %}
+<h2>Hyper news</h2>
+<form action="" method="get">
+    <input name="q"><button type="submit"> Search</button>
+</form>
+{% for link in created_list %}
+    {# Grouped by creation date #}
+    <h4>{{ link.grouper }}</h4>
+
+    <ul>
+    {# Grouped by link number #}
+    {% for news in link.list|dictsortreversed:"link" %}
+    <li><a target="_blank" href="/news/{{ news.link }}/">{{ news.title }}</a></li>
+    {% endfor %}
+    </ul>
+
+{% endfor %}
+
+<a target="_blank" href="/news/create/">Create new news!</a>
+</body>
+</html>
